@@ -9,11 +9,27 @@ require "base64"
 # The matching query ids will be returned in the `event[matches]` (default).
 #
 # [source,ruby]
+#          #percolates the existing document having the id as specified in the event id field
 #          percolate {
 #             hosts => ["es-server"]
 #             index => "my_index"
 #             type => "my_type"
-#             id => "123"
+#             id => "%{id}"
+#          }
+#
+#          # percolates the event itself
+#          percolate {
+#             hosts => ["es-server"]
+#             index => "my_index"
+#             type => "my_type"
+#          }
+#
+#          # percolates the sub-structure available in event['my_field']
+#          percolate {
+#             hosts => ["es-server"]
+#             index => "my_index"
+#             type => "my_type"
+#             target => "my_field"
 #          }
 #
 class LogStash::Filters::Percolate < LogStash::Filters::Base
