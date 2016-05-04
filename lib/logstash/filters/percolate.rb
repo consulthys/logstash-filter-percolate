@@ -109,7 +109,6 @@ class LogStash::Filters::Percolate < LogStash::Filters::Base
           event
         end
         body = {'doc' => doc}
-        @logger.warn("body:", :body => body)
 
         results = @client.percolate index: @index, type: @type, body: body
       end
