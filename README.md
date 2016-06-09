@@ -13,6 +13,42 @@ Logstash provides infrastructure to automatically generate documentation for thi
 - For formatting code or config example, you can use the asciidoc `[source,ruby]` directive
 - For more asciidoc formatting tips, see the excellent reference here https://github.com/elastic/docs#asciidoc-guide
 
+## Using this plugin
+
+This filter plugin runs very similarly to the [`elasticsearch` Logstash filter](https://github.com/logstash-plugins/logstash-filter-elasticsearch).
+
+It supports percolation of ad-hoc and/or existing documents, e.g.
+
+    # percolates the event itself
+    percolate {
+        hosts => ["localhost:9200"]
+        index => "my_index"
+        type => "my_type"
+    }
+
+    # percolates the sub-structure available in event['my_field']
+    percolate {
+        hosts => ["localhost:9200"]
+        index => "my_index"
+        type => "my_type"
+        target => "my_field"
+    }
+
+    # percolates the existing document having the id as specified in the event id field
+    percolate {
+        hosts => ["localhost:9200"]
+        index => "my_index"
+        type => "my_type"
+        id => "%{id}"
+    }
+
+
+*Important note:* this filter is only useful if you're using ES 2.x and earlier. The reason for this is that in ES 5.0 alpha2, the
+[Percolate API has been deprecated](https://www.elastic.co/guide/en/elasticsearch/reference/master/breaking_50_percolator.html#_percolate_and_multi_percolator_apis)
+in favor of a new [`percolate` query](https://www.elastic.co/guide/en/elasticsearch/reference/master/query-dsl-percolate-query.html) (see https://github.com/elastic/elasticsearch/pull/17560)
+which will run like any other normal DSL query, and thus, allow the use of the existing [`elasticsearch`](https://www.elastic.co/guide/en/logstash/current/plugins-filters-elasticsearch.html)
+Logstash filter in order to percolate documents on the fly.
+
 ## Need Help?
 
 Need help? Try #logstash on freenode IRC or the https://discuss.elastic.co/c/logstash discussion forum.
