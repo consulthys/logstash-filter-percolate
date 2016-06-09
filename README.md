@@ -42,6 +42,7 @@ It supports percolation of ad-hoc and/or existing documents, e.g.
         id => "%{id}"
     }
 
+A new field called `matches` (configurable) will be added to the event and will contain an array with the identifiers of all the matching queries.
 
 *Important note:* this filter is only useful if you're using ES 2.x and earlier. The reason for this is that in ES 5.0 alpha2, the
 [Percolate API has been deprecated](https://www.elastic.co/guide/en/elasticsearch/reference/master/breaking_50_percolator.html#_percolate_and_multi_percolator_apis)
